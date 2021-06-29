@@ -1,7 +1,11 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from app.database import scan, insert, deactivate_user
 
 app = Flask(__name__)
+
+@app.route("/")
+def get_index():
+    return render_template("index.html")
 
 @app.route("/users")
 def get_all_users():
