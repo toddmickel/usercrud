@@ -1,5 +1,5 @@
 from flask import Flask, request
-from app.database import scan, insert
+from app.database import scan, insert, deactivate_user
 
 app = Flask(__name__)
 
@@ -25,4 +25,15 @@ def create_user():
         user_data.get("hobbies"),
         user_data.get("active"),
     )
-    return out
+    return out, 201
+
+@app.route("/users/<int:uid>", methods=["DELETE"])
+def delete_user(uid):
+    out = {
+        "ok": True,
+        "message": "Success"
+    }
+    deactivate_user(uid)
+    return out, 200
+
+    # Create read a single user and update single user end points. And activate user?

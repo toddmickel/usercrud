@@ -12,7 +12,7 @@ def get_db():
 
 
 def output_formatter(results: tuple):
-    out = {"body": []}
+    out =[]
     for result in results:
         res_dict = {}
         res_dict["id"] = result[0]
@@ -20,7 +20,7 @@ def output_formatter(results: tuple):
         res_dict["last_name"] = result[2]
         res_dict["hobbies"] = result[3]
         res_dict["active"] = result[4]
-        out["body"].append(res_dict)
+        out.append(res_dict)
     return out
 
 
@@ -46,3 +46,10 @@ def insert(first_name, last_name, hobbies=None, active=None):
     cursor.commit()
     cursor.close()
     return last_row_id
+
+
+def deactivate_user(uid):
+    cursor = get_db()
+    cursor.execute("UPDATE user SET active=0 WHERE id=?", (uid,))
+    cursor.commit()
+    cursor.close()
