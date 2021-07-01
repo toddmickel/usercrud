@@ -1,5 +1,10 @@
 from flask import Flask, request, render_template
-from app.database import scan, insert, deactivate_user
+from app.database import (
+    scan, 
+    insert, 
+    deactivate_user, 
+    select_user,
+)
 
 app = Flask(__name__)
 
@@ -41,3 +46,17 @@ def delete_user(uid):
     return out, 200
 
     # Create read a single user and update single user end points. And activate user?
+@app.route("/users/<int:uid>", methods=["GET"])
+def get_user(uid):
+    # out = {
+    #    "ok": True,
+    #   "message": "Success"
+    #}
+    user_list = select_user(uid)
+    if user_list:
+        return render_template("user_detail.html", user=user_list[0])
+    return render_template("404.html"), 404
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404
